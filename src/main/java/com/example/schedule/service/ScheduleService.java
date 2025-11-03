@@ -1,9 +1,7 @@
 package com.example.schedule.service;
 
 
-import com.example.schedule.dto.CreateScheduleRequest;
-import com.example.schedule.dto.CreateScheduleResponse;
-import com.example.schedule.dto.GetOneScheduleResponse;
+import com.example.schedule.dto.*;
 import com.example.schedule.entity.Schedule;
 import com.example.schedule.repository.Schedulerepository;
 import lombok.RequiredArgsConstructor;
@@ -56,9 +54,9 @@ public class ScheduleService {
     public List<GetOneScheduleResponse> getAllSchedule(String name){
         List<Schedule> schedules;
         if (name != null && !name.isBlank()){
-            schedules= schedulerepository.findAll();
+            schedules= schedulerepository.findAllByNameOrderByModifiedAtDesc(name);
         }else {
-            schedules= schedulerepository.findAll();
+            schedules= schedulerepository.findAllByOrderByModifiedAtDesc();
         }
 
         List<GetOneScheduleResponse> dtos = new ArrayList<>();
@@ -74,6 +72,29 @@ public class ScheduleService {
             dtos.add(dto);
         }
         return dtos;
+    }
+    //일정 수정
+    @Transactional
+    public UpdateScheduleResponse update(Long scheduleId, UpdateScheduleRequest request){
+        Schedule schedule=  schedulerepository.findById(scheduleId).orElseThrow(
+                ()-> new IllegalStateException("존재하지 않는 유저 입니다.")
+        );
+
+        if (!schedule.getPassword().equals(request.getPassword())){
+            throw new IllegalArgumentException("비밀번호가 일치 하지 않습니다.");
+        }
+        schedule.update(
+                request.getTitle(),
+                request.getName()
+        );
+        return new UpdateScheduleResponse(
+                schedule.getId(),
+                schedule.getTitle(),
+                schedule.getContent(),
+                schedule.getName(),
+                schedule.getCreatedAt(),
+                schedule.getModifiedAt()
+        );
     }
 
 }
