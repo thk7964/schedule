@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 public class ScheduleController {
@@ -18,5 +20,16 @@ public class ScheduleController {
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
+    @GetMapping("/schedule/{scheduleId}")
+    public ResponseEntity<GetOneScheduleResponse> getOneScheduleResponse(@PathVariable Long scheduleId) {
+        GetOneScheduleResponse result = scheduleService.getOneSchedule(scheduleId);
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
+
+    @GetMapping("/schedule")
+    public ResponseEntity<List<GetOneScheduleResponse>> getAllSchedule() {
+       List<GetOneScheduleResponse> result = scheduleService.getAllSchedule();
+        return ResponseEntity.status(HttpStatus.OK).body(result);
+    }
 
 }
