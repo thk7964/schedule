@@ -8,7 +8,7 @@ import lombok.*;
 @Entity
 @Table(name = "schedule")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Schedule {
+public class Schedule extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
