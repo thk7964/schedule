@@ -27,8 +27,8 @@ public class ScheduleController {
     }
 
     @GetMapping("/schedule")
-    public ResponseEntity<List<GetOneScheduleResponse>> getAllSchedule() {
-       List<GetOneScheduleResponse> result = scheduleService.getAllSchedule();
+    public ResponseEntity<List<GetOneScheduleResponse>> getAllSchedule(@RequestParam(required = false) String name) {
+       List<GetOneScheduleResponse> result = scheduleService.getAllSchedule(name);
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 

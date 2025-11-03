@@ -53,8 +53,14 @@ public class ScheduleService {
 
     // 일정 전체 조회
     @Transactional(readOnly = true)
-    public List<GetOneScheduleResponse> getAllSchedule(){
-        List<Schedule> schedules = schedulerepository.findAll();
+    public List<GetOneScheduleResponse> getAllSchedule(String name){
+        List<Schedule> schedules;
+        if (name != null && !name.isBlank()){
+            schedules= schedulerepository.findAll();
+        }else {
+            schedules= schedulerepository.findAll();
+        }
+
         List<GetOneScheduleResponse> dtos = new ArrayList<>();
         for (Schedule schedule : schedules){
             GetOneScheduleResponse dto =new GetOneScheduleResponse(
@@ -69,4 +75,5 @@ public class ScheduleService {
         }
         return dtos;
     }
+
 }
