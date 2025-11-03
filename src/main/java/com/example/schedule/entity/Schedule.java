@@ -21,6 +21,7 @@ public class Schedule extends BaseEntity {
     @Column(length = 30, nullable = false)
     private String password;
 
+
     public Schedule(String title, String content,String name, String password){
         this.title=title;
         this.content=content;
@@ -28,8 +29,6 @@ public class Schedule extends BaseEntity {
         this.password=password;
     }
 
-    public void update(String title, String content){
-        this.title=title;
-        this.content=content;
-    }
+
 }
+

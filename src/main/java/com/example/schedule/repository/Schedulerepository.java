@@ -1,4 +1,10 @@
 package com.example.schedule.repository;
 
-public interface Schedulerepository {
+
+import com.example.schedule.entity.Schedule;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface Schedulerepository extends JpaRepository<Schedule, Long> {
+
+
 }
