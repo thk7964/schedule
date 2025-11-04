@@ -5,6 +5,9 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Entity
 @Table(name = "schedule")
@@ -21,6 +24,9 @@ public class Schedule extends BaseEntity {
     private String name;//작성자명
     @Column(length = 30, nullable = false)// 최대길이 30, null 불가
     private String password;//비밀번호
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "schedule", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<Comment> comments=new ArrayList<>();
 
     //생성자
     public Schedule(String title, String content,String name, String password){
