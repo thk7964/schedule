@@ -36,8 +36,9 @@ public class ScheduleService {
     //일정 단 건 조회
     @Transactional(readOnly = true)
     public GetOneScheduleResponse getOneSchedule(Long scheduleId){
+        //일정이 없으면 예외 발생
         Schedule schedule = schedulerepository.findById(scheduleId).orElseThrow(
-                ()-> new IllegalStateException("존재하지 않는 유저 입니다.")
+                ()-> new IllegalStateException("존재하지 않는 일정입니다.")
         );
         return new GetOneScheduleResponse(
                 schedule.getId(),
@@ -53,9 +54,12 @@ public class ScheduleService {
     @Transactional(readOnly = true)
     public List<GetOneScheduleResponse> getAllSchedule(String name){
         List<Schedule> schedules;
+        //name이 null인지 공백인지 필터링
         if (name != null && !name.isBlank()){
+            //작성자 명 기준으로 조회 (수정일 기준 내림차순)
             schedules= schedulerepository.findAllByNameOrderByModifiedAtDesc(name);
         }else {
+            //작성자 명이 없을 경우 전체 조회 (수정일 기준 내림차순)
             schedules= schedulerepository.findAllByOrderByModifiedAtDesc();
         }
 
@@ -76,13 +80,15 @@ public class ScheduleService {
     //일정 수정
     @Transactional
     public UpdateScheduleResponse update(Long scheduleId, UpdateScheduleRequest request){
+        //수정할 일정이 없으면 예외 발생
         Schedule schedule=  schedulerepository.findById(scheduleId).orElseThrow(
-                ()-> new IllegalStateException("존재하지 않는 유저 입니다.")
+                ()-> new IllegalStateException("존재하지 않는 일정입니다.")
         );
-
+        //비밀번호가 일치 하지 않으면 예외 발생
         if (!schedule.getPassword().equals(request.getPassword())){
             throw new IllegalArgumentException("비밀번호가 일치 하지 않습니다.");
         }
+        //제목과 작성자명 업데이트
         schedule.update(
                 request.getTitle(),
                 request.getName()
@@ -99,10 +105,12 @@ public class ScheduleService {
     //일정 삭제
     @Transactional
     public void delete(Long scheduleId){
+        //해당 일정 존재유무 확인 없으면 예외 발생
         boolean existence = schedulerepository.existsById(scheduleId);
         if(!existence){
-            throw new IllegalStateException("존재하지 않는 유저입니다.");
+            throw new IllegalStateException("존재하지 않는 일정입니다..");
         }
+        //존재하면 삭제
         schedulerepository.deleteById(scheduleId);
     }
 }
