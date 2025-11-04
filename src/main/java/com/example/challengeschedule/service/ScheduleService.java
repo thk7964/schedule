@@ -20,8 +20,9 @@ public class ScheduleService {
     //일정 생성
     @Transactional
     public CreateScheduleResponse save(CreateScheduleRequest request){
+        //요청값을 기반으로 일정 엔티티 생성
         Schedule schedule = new Schedule(request.getTitle(),request.getContent(),request.getName(),request.getPassword());
-        Schedule saveSchedule = schedulerepository.save(schedule);
+        Schedule saveSchedule = schedulerepository.save(schedule);//DB에 저장
 
         return new CreateScheduleResponse(
                 saveSchedule.getId(),
@@ -33,7 +34,7 @@ public class ScheduleService {
         );
 
     }
-    //일정 단 건 조회
+    //일정 단건 조회
     @Transactional(readOnly = true)
     public GetOneScheduleResponse getOneSchedule(Long scheduleId){
         //일정이 없으면 예외 발생
@@ -50,7 +51,7 @@ public class ScheduleService {
 
                 ))
                 .toList();
-        if(!commentResponses.isEmpty()){//댓글이 하나 이상 있을 때 실행
+        if(!commentResponses.isEmpty()){//댓글이 하나 이상 있을 때 댓글을 포함해서 반환
             return new GetOneScheduleResponse(
                     schedule.getId(),
                     schedule.getTitle(),
@@ -61,7 +62,7 @@ public class ScheduleService {
                     commentResponses
             );
         }
-        return new GetOneScheduleResponse(
+        return new GetOneScheduleResponse(//댓글이 없을 경우 댓글 제외하고 반환
                 schedule.getId(),
                 schedule.getTitle(),
                 schedule.getContent(),
@@ -125,13 +126,16 @@ public class ScheduleService {
     }
     //일정 삭제
     @Transactional
-    public void delete(Long scheduleId){
+    public void delete(Long scheduleId, DeleteScheduleRequest request){
         //해당 일정 존재유무 확인 없으면 예외 발생
-        boolean existence = schedulerepository.existsById(scheduleId);
-        if(!existence){
-            throw new IllegalStateException("존재하지 않는 일정입니다..");
+        Schedule schedule=  schedulerepository.findById(scheduleId).orElseThrow(
+                ()-> new IllegalStateException("존재하지 않는 일정입니다.")
+        );
+        //비밀번호가 일치 하지 않으면 예외 발생
+        if (!schedule.getPassword().equals(request.getPassword())){
+            throw new IllegalArgumentException("비밀번호가 일치 하지 않습니다.");
         }
         //존재하면 삭제
-        schedulerepository.deleteById(scheduleId);
+        schedulerepository.delete(schedule);
     }
 }

@@ -32,16 +32,16 @@ public class ScheduleController {
        List<GetOneScheduleResponse> result = scheduleService.getAllSchedule(name);
         return ResponseEntity.status(HttpStatus.OK).body(result);//전체 조회 정보와 200 상태코드 반환
     }
-    //일정 조회
+    //일정 수정
     @PutMapping("/schedules/{scheduleId}")
-    public ResponseEntity<UpdateScheduleResponse> update(@PathVariable Long scheduleId, @RequestBody UpdateScheduleRequest request) {
+    public ResponseEntity<UpdateScheduleResponse> update(@Valid @PathVariable Long scheduleId, @RequestBody UpdateScheduleRequest request) {
         UpdateScheduleResponse result = scheduleService.update(scheduleId, request);
         return ResponseEntity.status(HttpStatus.OK).body(result);//수정된 일정 정보와 200 상태코드 반환
     }
     //알정 삭제
     @DeleteMapping("/schedules/{scheduleId}")
-    public ResponseEntity<Void> deleteSchedule(@PathVariable Long scheduleId) {
-        scheduleService.delete(scheduleId);
+    public ResponseEntity<Void> deleteSchedule(@PathVariable Long scheduleId,@Valid @RequestBody DeleteScheduleRequest request) {
+        scheduleService.delete(scheduleId, request);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();//삭제 성공시 204 상태코드 반환
     }
 

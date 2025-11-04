@@ -3,6 +3,7 @@ package com.example.challengeschedule.controller;
 import com.example.challengeschedule.dto.CommentRequest;
 import com.example.challengeschedule.dto.CommentResponse;
 import com.example.challengeschedule.service.CommentService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,7 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping("/schedules/{scheduleId}/comments")
-    public ResponseEntity<CommentResponse> createComment(@PathVariable Long scheduleId, @RequestBody CommentRequest commentRequest) {
+    public ResponseEntity<CommentResponse> createComment(@Valid  @PathVariable Long scheduleId, @RequestBody CommentRequest commentRequest) {
         CommentResponse commentResult = commentService.commentSave(scheduleId, commentRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(commentResult);
     }
