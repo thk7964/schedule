@@ -40,6 +40,27 @@ public class ScheduleService {
         Schedule schedule = schedulerepository.findById(scheduleId).orElseThrow(
                 ()-> new IllegalStateException("존재하지 않는 일정입니다.")
         );
+        List<CommentResponse> commentResponses=schedule.getComments().stream()
+                .map(comment -> new CommentResponse(
+                        comment.getCommentId(),
+                        comment.getCommentContent(),
+                        comment.getCommentName(),
+                        comment.getCreatedAt(),
+                        comment.getModifiedAt()
+
+                ))
+                .toList();
+        if(!commentResponses.isEmpty()){//댓글이 하나 이상 있을 때 실행
+            return new GetOneScheduleResponse(
+                    schedule.getId(),
+                    schedule.getTitle(),
+                    schedule.getContent(),
+                    schedule.getName(),
+                    schedule.getCreatedAt(),
+                    schedule.getModifiedAt(),
+                    commentResponses
+            );
+        }
         return new GetOneScheduleResponse(
                 schedule.getId(),
                 schedule.getTitle(),
