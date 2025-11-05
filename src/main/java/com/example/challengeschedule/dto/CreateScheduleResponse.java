@@ -4,7 +4,7 @@ import lombok.Getter;
 
 import java.time.LocalDateTime;
 
-@Getter
+@Getter//클래스 모든 필드에 대해 자동으로 게터 메서드를 생성
 public class CreateScheduleResponse extends ScheduleResponse {//일정 생성에 대한 응답 DTO
 
     public CreateScheduleResponse(Long id, String title, String content, String name, LocalDateTime createdAt, LocalDateTime modifiedAt) {

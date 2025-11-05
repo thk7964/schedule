@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController//
+@RestController//Spring에서 Controller를 지정
 @RequiredArgsConstructor//final 필드에 대한 생성자를 자동 생성
 public class CommentController {
     private final CommentService commentService;

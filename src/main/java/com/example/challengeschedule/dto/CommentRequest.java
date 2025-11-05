@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 
-@Getter
+@Getter//클래스 모든 필드에 대해 자동으로 게터 메서드를 생성
 public class CommentRequest {
     @Size(max=100)//댓글 내용 최대 100글자까지 제한
     @NotBlank(message = "댓글 내용은 필수 입력 값입니다.")//한 글자라도 입력이 안되면 "댓글 내용은 필수 입력 값입니다."반환(필수값 설정)

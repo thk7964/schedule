@@ -10,8 +10,8 @@ import jakarta.validation.Valid;
 
 import java.util.List;
 
-@RestController
-@RequiredArgsConstructor
+@RestController//Spring에서 Controller를 지정
+@RequiredArgsConstructor//final 필드에 대한 생성자를 자동 생성
 public class ScheduleController {
 
     private final ScheduleService scheduleService;

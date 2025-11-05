@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@RequiredArgsConstructor
+@RequiredArgsConstructor//final 필드에 대한 생성자를 자동 생성
 public class CommentService {
 
     private final CommentRepository commentRepository;
