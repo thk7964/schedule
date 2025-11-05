@@ -4,6 +4,8 @@ package com.example.challengeschedule.service;
 import com.example.challengeschedule.dto.*;
 import com.example.challengeschedule.entity.Comment;
 import com.example.challengeschedule.entity.Schedule;
+import com.example.challengeschedule.exception.CustomException;
+import com.example.challengeschedule.exception.ErrorCode;
 import com.example.challengeschedule.repository.CommentRepository;
 import com.example.challengeschedule.repository.ScheduleRepository;
 import lombok.RequiredArgsConstructor;
@@ -41,7 +43,7 @@ public class ScheduleService {
     public GetOneScheduleResponse getOneSchedule(Long scheduleId){
         //일정이 없으면 예외 발생
         Schedule schedule = schedulerepository.findById(scheduleId).orElseThrow(
-                ()-> new IllegalStateException("존재하지 않는 일정입니다.")
+                ()-> new CustomException(ErrorCode.SCHEDULE_NOT_FOUND)
         );
         List<Comment> comments= commentRepository.findAllByScheduleId(scheduleId);
         List<CommentResponse> commentResponses=comments.stream()
@@ -106,11 +108,11 @@ public class ScheduleService {
     public UpdateScheduleResponse update(Long scheduleId, UpdateScheduleRequest request){
         //수정할 일정이 없으면 예외 발생
         Schedule schedule=  schedulerepository.findById(scheduleId).orElseThrow(
-                ()-> new IllegalStateException("존재하지 않는 일정입니다.")
+                ()-> new CustomException(ErrorCode.SCHEDULE_NOT_FOUND)
         );
         //비밀번호가 일치 하지 않으면 예외 발생
         if (!schedule.getPassword().equals(request.getPassword())){
-            throw new IllegalArgumentException("비밀번호가 일치 하지 않습니다.");
+            throw new CustomException(ErrorCode.INVALID_SCHEDULE_PASSWORD);
         }
         //제목과 작성자명 업데이트
         schedule.update(
@@ -131,11 +133,11 @@ public class ScheduleService {
     public void delete(Long scheduleId, DeleteScheduleRequest request){
         //해당 일정 존재유무 확인 없으면 예외 발생
         Schedule schedule=  schedulerepository.findById(scheduleId).orElseThrow(
-                ()-> new IllegalStateException("존재하지 않는 일정입니다.")
+                ()-> new CustomException(ErrorCode.SCHEDULE_NOT_FOUND)
         );
         //비밀번호가 일치 하지 않으면 예외 발생
         if (!schedule.getPassword().equals(request.getPassword())){
-            throw new IllegalArgumentException("비밀번호가 일치 하지 않습니다.");
+            throw new CustomException(ErrorCode.INVALID_SCHEDULE_PASSWORD);
         }
         //댓글 삭제
         commentRepository.deleteAllByScheduleId(scheduleId);

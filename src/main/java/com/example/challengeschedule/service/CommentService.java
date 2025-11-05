@@ -4,6 +4,8 @@ import com.example.challengeschedule.dto.CommentRequest;
 import com.example.challengeschedule.dto.CommentResponse;
 import com.example.challengeschedule.entity.Comment;
 import com.example.challengeschedule.entity.Schedule;
+import com.example.challengeschedule.exception.CustomException;
+import com.example.challengeschedule.exception.ErrorCode;
 import com.example.challengeschedule.repository.CommentRepository;
 import com.example.challengeschedule.repository.ScheduleRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,12 +24,12 @@ public class CommentService {
     public CommentResponse commentSave(Long scheduleId, CommentRequest commentRequest) {
         //일정 존재여부 확인
         Schedule schedule = schedulerepository.findById(scheduleId).orElseThrow(
-                () -> new IllegalStateException("존재하지 않는 일정입니다.")
+                () -> new CustomException(ErrorCode.SCHEDULE_NOT_FOUND)
         );
         //댓글이 10개 이하인지 확인
         int commentCount = commentRepository.countByScheduleId(scheduleId);
         if (commentCount >= 10) {
-            throw new IllegalStateException("댓글은 최대 10개까지만 작성할 수 있습니다.");
+            throw new CustomException(ErrorCode.COMMENT_LIMIT_EXCEEDED);
         }
         //요청값을 기반으로 댓글 엔티티 생성
         Comment comment = new Comment(schedule, commentRequest.getCommentContent(), commentRequest.getCommentName(), commentRequest.getCommentPassword());
