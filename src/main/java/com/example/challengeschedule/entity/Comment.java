@@ -7,8 +7,8 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
-@Table(name = "comments")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "comments")//댓글 테이블 매핑
+@NoArgsConstructor(access = AccessLevel.PROTECTED)//기본 생성자(JPA 내부용)
 public class Comment extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,9 +19,9 @@ public class Comment extends BaseEntity {
     private String commentName;//댓글 작성자명
     @Column(length = 30, nullable = false)// 최대길이 30, null 불가
     private String commentPassword;//댓글 비밀번호
-
+    //댓글과 일정의 연관관계 설정
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "schedule_id", nullable = false)
+    @JoinColumn(name = "schedule_id", nullable = false)//댓글과 일정의 schedule_id로 연결한다.(nullable = false: 반드시 하나의 일정에 속해야된다.)
     private Schedule schedule;
 
     //생성자

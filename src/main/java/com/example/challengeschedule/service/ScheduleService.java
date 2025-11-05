@@ -48,7 +48,6 @@ public class ScheduleService {
                         comment.getCommentName(),
                         comment.getCreatedAt(),
                         comment.getModifiedAt()
-
                 ))
                 .toList();
         if(!commentResponses.isEmpty()){//댓글이 하나 이상 있을 때 댓글을 포함해서 반환
