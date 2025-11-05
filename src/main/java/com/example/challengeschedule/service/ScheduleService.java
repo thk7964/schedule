@@ -137,6 +137,8 @@ public class ScheduleService {
         if (!schedule.getPassword().equals(request.getPassword())){
             throw new IllegalArgumentException("비밀번호가 일치 하지 않습니다.");
         }
+        //댓글 삭제
+        commentRepository.deleteAllByScheduleId(scheduleId);
         //존재하면 삭제
         schedulerepository.delete(schedule);
     }

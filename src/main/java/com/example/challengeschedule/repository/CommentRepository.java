@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
     int countByScheduleId(Long scheduleId);// 댓글 개수 조회
-
+    void deleteAllByScheduleId(Long scheduleId);//댓글 삭제
     List<Comment> findAllByScheduleId(Long scheduleId);//일정에 달린 모든 댓글 조회
 }
