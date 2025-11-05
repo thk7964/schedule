@@ -29,7 +29,7 @@ public class Comment extends BaseEntity {
         this.commentContent = commentContent;
         this.commentName = commentName;
         this.commentPassword = commentPassword;
-        this.schedule=schedule;
+        this.schedule = schedule;
     }
 }
 

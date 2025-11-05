@@ -2,7 +2,9 @@ package com.example.challengeschedule.service;
 
 
 import com.example.challengeschedule.dto.*;
+import com.example.challengeschedule.entity.Comment;
 import com.example.challengeschedule.entity.Schedule;
+import com.example.challengeschedule.repository.CommentRepository;
 import com.example.challengeschedule.repository.ScheduleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,7 +18,7 @@ import java.util.List;
 public class ScheduleService {
 
     private final ScheduleRepository schedulerepository;
-
+    private final CommentRepository commentRepository;
     //일정 생성
     @Transactional
     public CreateScheduleResponse save(CreateScheduleRequest request){
@@ -41,7 +43,8 @@ public class ScheduleService {
         Schedule schedule = schedulerepository.findById(scheduleId).orElseThrow(
                 ()-> new IllegalStateException("존재하지 않는 일정입니다.")
         );
-        List<CommentResponse> commentResponses=schedule.getComments().stream()
+        List<Comment> comments= commentRepository.findAllByScheduleId(scheduleId);
+        List<CommentResponse> commentResponses=comments.stream()
                 .map(comment -> new CommentResponse(
                         comment.getCommentId(),
                         comment.getCommentContent(),
