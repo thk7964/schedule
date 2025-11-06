@@ -4,8 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
-@Getter
-@AllArgsConstructor
+@Getter//클래스 모든 필드에 대해 자동으로 게터 메서드를 생성
+@AllArgsConstructor//모든 필드를 매개변수로 받는 생성자를 자동생성
 public enum ErrorCode {
 
     SCHEDULE_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 일정입니다."),
